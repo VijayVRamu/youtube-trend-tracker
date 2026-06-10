@@ -16,12 +16,28 @@ A React + Vite web app that fetches real-time YouTube data and calculates a **Vi
 
 ## Local development
 
+### 1. Set up your API key
+
+Copy the example env file and add your YouTube Data API v3 key:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```
+VITE_YOUTUBE_API_KEY=your_api_key_here
+```
+
+### 2. Run the dev server
+
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173, paste your YouTube Data API v3 key, and go.
+Open http://localhost:5173.
 
 ### Getting an API key
 
@@ -35,21 +51,9 @@ The free tier provides 10,000 quota units/day — more than enough for personal 
 
 ---
 
-## Deploy to Cloudflare Pages via GitHub
+## Deploy to Cloudflare Pages
 
-### 1. Push to GitHub
-
-```bash
-cd youtube-trend-tracker
-git init
-git add .
-git commit -m "initial commit"
-# create a new repo on github.com, then:
-git remote add origin https://github.com/YOUR_USERNAME/youtube-trend-tracker.git
-git push -u origin main
-```
-
-### 2. Connect to Cloudflare Pages
+### 1. Connect to Cloudflare Pages
 
 1. Log in to https://dash.cloudflare.com
 2. Go to **Workers & Pages → Pages → Create a project**
@@ -62,7 +66,15 @@ git push -u origin main
 | Build command | `npm run build` |
 | Build output directory | `dist` |
 
-5. Click **Save and Deploy** — Cloudflare will build and host the site automatically.
+### 2. Add your API key in Cloudflare
+
+Go to your project's **Settings → Environment variables** and add:
+
+```
+VITE_YOUTUBE_API_KEY = your_api_key_here
+```
+
+Cloudflare injects it at build time — no key ever goes into the repo.
 
 Every `git push` to `main` triggers a new deployment.
 
@@ -75,6 +87,7 @@ youtube-trend-tracker/
 ├── index.html
 ├── package.json
 ├── vite.config.js
+├── .env.example            # Copy to .env and add your key
 ├── .gitignore
 ├── public/
 │   ├── _redirects          # Cloudflare SPA routing fix
@@ -84,7 +97,6 @@ youtube-trend-tracker/
     ├── App.jsx             # Main app state & layout
     ├── index.css           # Global styles & CSS variables
     ├── components/
-    │   ├── ApiKeyInput.jsx
     │   ├── VideoCard.jsx
     │   ├── ScoreMeter.jsx
     │   └── StatsBar.jsx
